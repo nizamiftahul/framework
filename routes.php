@@ -1,3 +1,3 @@
 <?php
 
-$router->add('/{$p}', 'IndexController#index');
+$router->add('/$p/$r', 'IndexController#index');
