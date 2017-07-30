@@ -27,25 +27,19 @@ class Router {
     public function dispatch()
     {
         foreach ($this->routes as $url => $action) {
-            $params = explode('$', $url);
-            $route = '/public'.$params[0];
-            $req = explode($route, $_SERVER['REQUEST_URI']);
-
-            if ($req[0] == '') {
+            $params    = explode('$', $url);
+            $route     = $params[0];
+            $req       = explode($route, $_SERVER['REQUEST_URI']);
+            $reqParams = explode('/', $req[1]);
+            
+            if ($req[0] == '' && count($params) > count($reqParams)) {
                 if (is_callable($action)) return $action;
 
                 $actionArr = explode('#', $action);
                 $controller = 'app\\controllers\\'.$actionArr[0];
                 $method = $actionArr[1];
                 
-                if (isset($req[1])) {
-                    $arr = explode('/', $req[1]);
-                    for ($i=0; $i<5; $i++) {
-                        if (!isset($arr[$i])) $arr[$i] = null;
-                    }
-                    return (new $controller)->$method($arr[0],$arr[1],$arr[2],$arr[3],$arr[4]);    
-                }
-                return (new $controller)->$method();
+                return call_user_func_array([new $controller, $method], $reqParams);    
             }
         }
 

@@ -9,11 +9,14 @@ class ViewLoader {
         $this->path = $path;
     }
 
-    public function load($viewName)
+    public function load($viewName, $params)
     {
         $filePath = $this->path.$viewName;
         if (file_exists($filePath)) {
-            return file_get_contents($filePath);
+            ob_start();
+            extract($params);
+            include($filePath);
+            return ob_get_clean();
         }
 
         throw new Exception('View file does not exist');

@@ -2,7 +2,12 @@
     "autoload":{
         "psr-4":{
             "phpocean\\core\\": "./core",
-            "app\\controllers\\": "./controllers"
+            "app\\controllers\\": "./app/controllers",
+            "app\\models\\": "./app/models"
         }
+    },
+    "require": {
+        "vrana/notorm": "dev-master",
+        "doctrine/dbal": "v2.5.13"
     }
 }

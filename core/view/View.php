@@ -9,8 +9,8 @@ class View {
         $this->viewLoader = $viewLoader;
     }
 
-    public function display($viewName)
+    public function display($viewName, $params = null)
     {
-        echo $this->viewLoader->load($viewName);
+        echo $this->viewLoader->load($viewName, $params);
     }
 }
