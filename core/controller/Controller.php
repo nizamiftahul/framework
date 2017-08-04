@@ -9,11 +9,14 @@ class Controller {
 
     public function __construct()
     {
-        $core = new \phpocean\core\Core();
-        $this->db = $core->db();
+        $db = new \phpocean\core\database\Database();
+        $this->db = $db->db();
+        
+        // cek apakah module
+        $viewPath = '/'.explode('\controllers', get_class($this))[0].'/views/';
         
         $this->view = new \phpocean\core\view\View(
-            new \phpocean\core\view\ViewLoader(BASEPATH.'/views/')
+            new \phpocean\core\view\ViewLoader(BASEPATH.$viewPath)
         );
     }
 }

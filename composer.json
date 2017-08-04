@@ -3,7 +3,8 @@
         "psr-4":{
             "phpocean\\core\\": "./core",
             "app\\controllers\\": "./app/controllers",
-            "app\\models\\": "./app/models"
+            "app\\models\\": "./app/models",
+            "app\\modules\\": "./app/modules"
         }
     },
     "require": {

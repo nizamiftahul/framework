@@ -24,22 +24,37 @@ class Router {
         # code...
     }
 
+    public function redir($ctrl, $req, $action)
+    {
+        if ($req[0] == '') {
+            if (is_callable($action)) return $action;
+
+            $actionArr = explode('#', $action);
+            $controller = $ctrl.$actionArr[0];
+            $method = $actionArr[1];
+            
+            if (class_exists($controller)) {
+                if (isset($req[1])) return call_user_func_array([new $controller, $method], explode('/', $req[0]));
+                return call_user_func_array([new $controller, $method]);
+            }    
+        }
+
+        return false;
+    }
+
     public function dispatch()
     {
         foreach ($this->routes as $url => $action) {
             $params    = explode('$', $url);
             $route     = $params[0];
             $req       = explode($route, $_SERVER['REQUEST_URI']);
-            $reqParams = explode('/', $req[1]);
             
-            if ($req[0] == '' && count($params) > count($reqParams)) {
-                if (is_callable($action)) return $action;
+            if (is_null($this->redir('app\\controllers\\', $req, $action))) return;
 
-                $actionArr = explode('#', $action);
-                $controller = 'app\\controllers\\'.$actionArr[0];
-                $method = $actionArr[1];
-                
-                return call_user_func_array([new $controller, $method], $reqParams);    
+            $modules = scandir('app/modules');
+            foreach ($modules as $m) {
+                $reqParams = explode('/'.$m.'/', $req[1]);
+                if (is_null($this->redir('app\\modules\\'.$m.'\\controllers\\', $req, $action))) return;
             }
         }
 

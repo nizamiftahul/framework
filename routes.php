@@ -1,3 +1,7 @@
 <?php
 
-$router->add('/$p/$r', 'IndexController#index');
+// dev
+$router->add('/dev/test', 'TestController#index');
+
+// 
+// $router->add('/$p/$r', 'IndexController#index');

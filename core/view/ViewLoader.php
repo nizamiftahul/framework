@@ -14,11 +14,11 @@ class ViewLoader {
         $filePath = $this->path.$viewName;
         if (file_exists($filePath)) {
             ob_start();
-            extract($params);
+            if (!is_null($params)) extract($params);
             include($filePath);
             return ob_get_clean();
         }
-
+        var_dump($filePath);
         throw new Exception('View file does not exist');
     }
 }
